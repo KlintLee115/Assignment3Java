@@ -19,8 +19,8 @@ public class Word implements Comparable<Word>, Serializable {
     }
 
     public void addLine(int lineNumber) {
-        for(int i = 0 ; i < lines.size(); i++){
-            if(lines.get(i) != lineNumber){
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i) != lineNumber) {
                 lines.add(lineNumber);
             }
         }
@@ -33,9 +33,21 @@ public class Word implements Comparable<Word>, Serializable {
     public String getWord() {
         return word;
     }
-    
+
     public String getFilename() {
         return filename;
+    }
+
+    public String toString_pf() {
+        return "===" + word + "=== found in file: " + filename;
+    }
+
+    public String toString_pl() {
+        return "===" + word + "=== found in file: " + filename + " +  on lines: " + lines.toString();
+    }
+    
+    public String toString_po() {
+        return "===" + word + "=== number of entries: " + frequency + " found in file: " + filename + " +  on lines: " + lines.toString();
     }
 
     @Override
