@@ -1,5 +1,6 @@
 package implementations;
 
+import java.io.Serializable;
 import utilities.BSTreeADT;
 import utilities.Iterator;
 
@@ -7,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
+public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E>, Serializable {
     private BSTreeNode<E> root;
     private int size;
 

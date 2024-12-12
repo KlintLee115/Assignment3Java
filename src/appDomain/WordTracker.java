@@ -1,6 +1,7 @@
 package appDomain;
 
 import implementations.BSTree;
+import implementations.BSTreeNode;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -96,16 +97,19 @@ public class WordTracker implements Serializable {
     }
 
     //Main
-    public static void buildBinarySearchTree(BSTree tree, WordTracker tracker) throws IOException, ClassNotFoundException {
+    public static void buildBinarySearchTree(BSTree tree, WordTracker tracker, String option) throws IOException, ClassNotFoundException {
         ArrayList<Word> array = new ArrayList();
         array = tracker.readFile();
 
         if (repoExists() == false) {
+            System.out.println("*--No Repository Found--*");
             for (Word word : array) {
                 tree.add(word);
             }
         } else {
+            System.out.println("*--Repository Exists--*");
             tree = deserializeTree();
+            //System.out.println("---Root is ---" + tree.getRoot().getElement());
             for (Word word : array) {
                 tree.add(word);
             }
@@ -121,13 +125,45 @@ public class WordTracker implements Serializable {
         System.out.println("---Tree Complete---");
 
         System.out.println("---Results---");
-        System.out.println(tree);
+        
+        /*        Itertator it = tree.inorderIterator();
+        
+        BSTree inOrderTree = tree.inorderIterator();*/
+        
+        BSTreeNode node = tree.getRoot();
+        
+        printWordsInTree(node, option);
+        
 
+    }
+
+    public static void printWordsInTree(BSTreeNode focusNode, String option) {
+        if (focusNode != null) {
+            printWordsInTree(focusNode.getLeft(), option);
+            Word word;
+            switch (option) {
+            case "-pf":
+                word = (Word) focusNode.getElement();
+                System.out.println("Key: " + word.toString_pf());
+                break;
+            case "-pl":
+                word = (Word) focusNode.getElement();
+                System.out.println("Key: " + word.toString_pl());
+                break;
+            case "-po":
+                word = (Word) focusNode.getElement();
+                System.out.println("Key: " + word.toString_po());
+                break;
+            default:
+                throw new AssertionError();
+        }
+            printWordsInTree(focusNode.getRight(), option);
+        }
     }
 
     public static boolean repoExists() throws IOException {
         try {
-            FileInputStream fileIn = new FileInputStream("repository.ser");
+            FileInputStream fileIn = new FileInputStream("src/repository.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             fileIn.close();
             in.close();
@@ -138,10 +174,12 @@ public class WordTracker implements Serializable {
     }
 
     public static BSTree deserializeTree() throws IOException, ClassNotFoundException {
-        FileInputStream fileIn = new FileInputStream("repository.ser");
+        BSTree tree = null;
+        FileInputStream fileIn = new FileInputStream("src/repository.ser");
+
         ObjectInputStream in = new ObjectInputStream(fileIn);
 
-        BSTree tree = (BSTree) in.readObject();
+        tree = (BSTree) in.readObject();
 
         in.close();
         fileIn.close();
@@ -149,8 +187,10 @@ public class WordTracker implements Serializable {
         return tree;
     }
 
+    /*
     //A function to test the functionality of the tracker and the serialization
     public static void listWords(WordTracker tracker, String option) throws FileNotFoundException, IOException, ClassNotFoundException {
+<<<<<<< Updated upstream
         ArrayList<Word> repoArray = new ArrayList();
         ArrayList<Word> newArray = new ArrayList();
 
@@ -217,9 +257,78 @@ public class WordTracker implements Serializable {
         fileOut.close();
 
         System.out.println("---Listing Complete---");
+=======
+    ArrayList<Word> repoArray = new ArrayList();
+    ArrayList<Word> newArray = new ArrayList();
+    
+    newArray = tracker.readFile();
+    
+    if (repoExists() == true) {
+    repoArray = deserializeWords(repoArray);
+    //System.out.println("-- This deserializaed array has: " + repoArray + " --");
+    
+    //adds new words to the existing list
+    int repoArraySize = repoArray.size();
+    int newArraySize = newArray.size();
+    
+    try {
+    for (int i = 0; i < repoArraySize; i++) {
+    for (int j = 0; j < newArraySize; j++) {
+    Word repoWord = repoArray.get(i);
+    Word newWord = newArray.get(j);
+    
+    //For objects with the same name but different files.
+    int difference = repoWord.compareTo(newWord);
+    if (difference != 0) {
+    
+    //For objects with different names but the same files.
+    difference = repoWord.getFilename().compareTo(newWord.getFilename());
+    if (difference != 0) {
+    repoArray.add(newWord);
+>>>>>>> Stashed changes
     }
-
+    }
+    }
+    }
+    } catch (Exception e) {
+    System.out.println("Error: " + e);
+    }
+    } else {
+    for (Word newWord : newArray) {
+    repoArray.add(newWord);
+    //System.out.println(newWord);
+    }
+    }
+    
+    System.out.println("--------Results--------");
+    for (Word repoWord : repoArray) {
+    switch (option) {
+    case "-pf":
+    System.out.println(repoWord.toString_pf());
+    break;
+    case "-pl":
+    System.out.println(repoWord.toString_pl());
+    break;
+    case "-po":
+    System.out.println(repoWord);
+    break;
+    default:
+    throw new AssertionError();
+    }
+    }
+    
+    FileOutputStream fileOut = new FileOutputStream("src/repository.ser");
+    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+    out.writeObject(repoArray);
+    
+    out.close();
+    fileOut.close();
+    
+    System.out.println("---Listing Complete---");
+    }
+    
     public static ArrayList<Word> deserializeWords(ArrayList<Word> array) throws IOException, ClassNotFoundException {
+<<<<<<< Updated upstream
         FileInputStream fileIn = new FileInputStream("repository.ser");
         ObjectInputStream in = new ObjectInputStream(fileIn);
 
@@ -231,12 +340,25 @@ public class WordTracker implements Serializable {
         return array;
     }
 
+=======
+    FileInputStream fileIn = new FileInputStream("src/repository.ser");
+    ObjectInputStream in = new ObjectInputStream(fileIn);
+    
+    array = (ArrayList<Word>) in.readObject();
+    
+    in.close();
+    fileIn.close();
+    
+    return array;
+    }*/
+    
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         // Check if minimum required arguments are provided
         if (args.length < 2) {
             System.out.println("Usage: java -jar WordTracker.jar <input.txt> -pf/-pl/-po [-f <output.txt>]");
             return;
         }
+
 
         String fileName = args[0];         // First argument is the input file
         String sortOption = args[1];       // Second argument is the print option
@@ -247,15 +369,24 @@ public class WordTracker implements Serializable {
             outputFile = args[3];
         }
 
+        //String outputFile = args[6];
+
+
         System.out.println("Filename is: " + fileName);
 
         WordTracker tracker = null;
         try {
             tracker = new WordTracker(fileName);
-            listWords(tracker, sortOption);
+            //listWords(tracker, sortOption);
         } catch (FileNotFoundException e) {
             System.out.println("Error: " + e);
         }
+
+
+
+        BSTree tree = new BSTree();
+        buildBinarySearchTree(tree, tracker, sortOption);
+
     }
 
 }
