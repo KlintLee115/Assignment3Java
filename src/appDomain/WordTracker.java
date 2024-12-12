@@ -24,10 +24,19 @@ public class WordTracker implements Serializable {
         //Getting file path
         Path currentRelativePath = Paths.get("");
         String s = currentRelativePath.toAbsolutePath().toString();
-        String a = s + "\\res/" + textFile;
-        System.out.println(a);
+        // Go up one directory from dist to find the project's res folder
+        String a = s + "\\..\\res\\" + textFile;
+        System.out.println("Attempting to read file from: " + a);
 
         File filePath = new File(a);
+
+        if (!filePath.exists()) {
+            System.out.println("File not found. Checking alternate path...");
+            // Try alternate path
+            a = s + "\\res\\" + textFile;
+            System.out.println("Trying: " + a);
+            filePath = new File(a);
+        }
 
         this.fileReader = new Scanner(filePath);
         this.filename = textFile;
@@ -118,7 +127,7 @@ public class WordTracker implements Serializable {
 
     public static boolean repoExists() throws IOException {
         try {
-            FileInputStream fileIn = new FileInputStream("src/repository.ser");
+            FileInputStream fileIn = new FileInputStream("repository.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             fileIn.close();
             in.close();
@@ -129,7 +138,7 @@ public class WordTracker implements Serializable {
     }
 
     public static BSTree deserializeTree() throws IOException, ClassNotFoundException {
-        FileInputStream fileIn = new FileInputStream("src/repository.ser");
+        FileInputStream fileIn = new FileInputStream("repository.ser");
         ObjectInputStream in = new ObjectInputStream(fileIn);
 
         BSTree tree = (BSTree) in.readObject();
@@ -200,7 +209,7 @@ public class WordTracker implements Serializable {
             }
         }
 
-        FileOutputStream fileOut = new FileOutputStream("src/repository.ser");
+        FileOutputStream fileOut = new FileOutputStream("repository.ser");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(repoArray);
 
@@ -211,7 +220,7 @@ public class WordTracker implements Serializable {
     }
 
     public static ArrayList<Word> deserializeWords(ArrayList<Word> array) throws IOException, ClassNotFoundException {
-        FileInputStream fileIn = new FileInputStream("src/repository.ser");
+        FileInputStream fileIn = new FileInputStream("repository.ser");
         ObjectInputStream in = new ObjectInputStream(fileIn);
 
         array = (ArrayList<Word>) in.readObject();
@@ -223,10 +232,20 @@ public class WordTracker implements Serializable {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+        // Check if minimum required arguments are provided
+        if (args.length < 2) {
+            System.out.println("Usage: java -jar WordTracker.jar <input.txt> -pf/-pl/-po [-f <output.txt>]");
+            return;
+        }
 
-        String fileName = "simpleTest.txt";
-        String sortOption = "-po";
-        //String outputFile = args[6];
+        String fileName = args[0];         // First argument is the input file
+        String sortOption = args[1];       // Second argument is the print option
+        String outputFile = null;          // Optional output file
+
+        // Check for output file option
+        if (args.length >= 4 && args[2].equals("-f")) {
+            outputFile = args[3];
+        }
 
         System.out.println("Filename is: " + fileName);
 
@@ -237,9 +256,6 @@ public class WordTracker implements Serializable {
         } catch (FileNotFoundException e) {
             System.out.println("Error: " + e);
         }
-
-        //BSTree tree = new BSTree();
-        //buildBinarySearchTree(tree, tracker);
     }
 
 }
