@@ -87,7 +87,7 @@ public class WordTracker implements Serializable {
             String[] wordList = line.split("\\s+|(?<!\\w)'|'(?!\\w)|(?<=\\w)[,.;?!](?=\\s|$)");
 
             for (String word : wordList) {
-                if (word != null || word != "") {
+                if (word != null) {
                     //System.out.println("==="+word+"===");
                     addWord(word, filename, lineNumber);
                 }
@@ -127,10 +127,10 @@ public class WordTracker implements Serializable {
 
         System.out.println("---Results---");
         
-        /*        Itertator it = tree.inorderIterator();
         
-        BSTree inOrderTree = tree.inorderIterator();*/
+        tree.inorderIterator();
         
+        //System.out.println("---Root is: "+ tree.getRoot().getElement() +"---");
         BSTreeNode node = tree.getRoot();
         
         printWordsInTree(node, option);

@@ -60,18 +60,23 @@ public class Word implements Comparable<Word>, Serializable {
     @Override
     public int compareTo(Word wordObj) {
         int difference = this.word.compareTo(wordObj.word);
-        if (difference == 0) {
-            difference = this.filename.compareTo(wordObj.filename);
-            if (difference == 0) {
-                return 0;
-            } else if (difference == 1) {
-                return 1;
+        switch (difference) {
+            case 0:
+                difference = this.filename.compareTo(wordObj.filename);
+            switch (difference) {
+                case 0:
+                    return 0;
+                case 1:
+                    return 1;
+                default:
+                    return -1;
             }
-            return -1;
-        } else if (difference == 1) {
-            return 1;
+
+            case 1:
+                return 1;
+            default:
+                return -1; 
         }
-        return -1;
     }
 
 }
