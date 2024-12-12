@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class WordTracker implements Serializable {
 
     private Scanner fileReader;
@@ -111,7 +110,7 @@ public class WordTracker implements Serializable {
         fileOut.close();
 
         System.out.println("---Tree Complete---");
-        
+
         System.out.println("---Results---");
         System.out.println(tree);
 
@@ -140,10 +139,9 @@ public class WordTracker implements Serializable {
 
         return tree;
     }
-    
-    
+
     //A function to test the functionality of the tracker and the serialization
-    public static void listWords(WordTracker tracker) throws FileNotFoundException, IOException, ClassNotFoundException {
+    public static void listWords(WordTracker tracker, String option) throws FileNotFoundException, IOException, ClassNotFoundException {
         ArrayList<Word> repoArray = new ArrayList();
         ArrayList<Word> newArray = new ArrayList();
 
@@ -187,7 +185,19 @@ public class WordTracker implements Serializable {
 
         System.out.println("--------Results--------");
         for (Word repoWord : repoArray) {
-            System.out.println(repoWord);
+            switch (option) {
+                case "-pf":
+                    System.out.println(repoWord.toString_pf());
+                    break;
+                case "-pl":
+                    System.out.println(repoWord.toString_pl());
+                    break;
+                case "-po":
+                    System.out.println(repoWord);
+                    break;
+                default:
+                    throw new AssertionError();
+            }
         }
 
         FileOutputStream fileOut = new FileOutputStream("src/repository.ser");
@@ -199,7 +209,7 @@ public class WordTracker implements Serializable {
 
         System.out.println("---Listing Complete---");
     }
-    
+
     public static ArrayList<Word> deserializeWords(ArrayList<Word> array) throws IOException, ClassNotFoundException {
         FileInputStream fileIn = new FileInputStream("F:\\Fall2024\\CPRG-304 OOP3\\Assignments\\Assignment3Java\\src\\repository.ser");
         ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -211,26 +221,23 @@ public class WordTracker implements Serializable {
 
         return array;
     }
-    
-    
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         String fileName = "simpleTest.txt";
+        String sortOption = "-po";
+        //String outputFile = args[6];
 
         System.out.println("Filename is: " + fileName);
-        //String sortOption = args[5];
-        //String outputFile = args[6];
-        
+
         WordTracker tracker = null;
         try {
             tracker = new WordTracker(fileName);
-            listWords(tracker);
+            listWords(tracker, sortOption);
         } catch (FileNotFoundException e) {
             System.out.println("Error: " + e);
         }
 
-        
         //BSTree tree = new BSTree();
         //buildBinarySearchTree(tree, tracker);
     }
