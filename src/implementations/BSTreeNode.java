@@ -16,7 +16,7 @@ public class BSTreeNode<E extends Comparable<? super E>> {
      *
      * @return the data stored in the node
      */
-    public E getData() {
+    public E getElement() {
         return data;
     }
 
