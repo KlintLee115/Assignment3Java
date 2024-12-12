@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -287,6 +288,9 @@ public class WordTracker implements Serializable {
         // Check for output file option
         if (args.length >= 4 && args[2].equals("-f")) {
             outputFile = args[3];
+            // Add this: Redirect System.out to the file
+            PrintStream fileOut = new PrintStream(new FileOutputStream(outputFile));
+            System.setOut(fileOut);
         }
 
         //String outputFile = args[6];
