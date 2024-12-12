@@ -94,7 +94,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
     }
 
     private boolean addRecursively(BSTreeNode<E> node, E newEntry) {
-        int compareResult = newEntry.compareTo(node.getData());
+        int compareResult = newEntry.compareTo(node.getElement());
         if (compareResult == 0)
             return false;
         else if (compareResult < 0) {
@@ -125,7 +125,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
     private BSTreeNode<E> searchRecursively(BSTreeNode<E> node, E entry) {
         if (node == null)
             return null;
-        int compareResult = entry.compareTo(node.getData());
+        int compareResult = entry.compareTo(node.getElement());
         if (compareResult == 0)
             return node;
         else if (compareResult < 0)
@@ -174,7 +174,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
             if (node == null)
                 return;
             inorderTraversal(node.getLeft());
-            elements.add(node.getData());
+            elements.add(node.getElement());
             inorderTraversal(node.getRight());
         }
 
@@ -224,7 +224,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
         private void preorderTraversal(BSTreeNode<E> node) {
             if (node == null)
                 return;
-            elements.add(node.getData());
+            elements.add(node.getElement());
             preorderTraversal(node.getLeft());
             preorderTraversal(node.getRight());
         }
@@ -296,7 +296,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
                 return;
             postorderTraversal(node.getLeft());
             postorderTraversal(node.getRight());
-            elements.add(node.getData());
+            elements.add(node.getElement());
         }
 
         /**
