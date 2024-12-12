@@ -129,7 +129,7 @@ public class WordTracker implements Serializable {
     }
 
     public static BSTree deserializeTree() throws IOException, ClassNotFoundException {
-        FileInputStream fileIn = new FileInputStream("F:\\Fall2024\\CPRG-304 OOP3\\Assignments\\Assignment3Java\\src\\repository.ser");
+        FileInputStream fileIn = new FileInputStream("src/repository.ser");
         ObjectInputStream in = new ObjectInputStream(fileIn);
 
         BSTree tree = (BSTree) in.readObject();
@@ -211,7 +211,7 @@ public class WordTracker implements Serializable {
     }
 
     public static ArrayList<Word> deserializeWords(ArrayList<Word> array) throws IOException, ClassNotFoundException {
-        FileInputStream fileIn = new FileInputStream("F:\\Fall2024\\CPRG-304 OOP3\\Assignments\\Assignment3Java\\src\\repository.ser");
+        FileInputStream fileIn = new FileInputStream("src/repository.ser");
         ObjectInputStream in = new ObjectInputStream(fileIn);
 
         array = (ArrayList<Word>) in.readObject();

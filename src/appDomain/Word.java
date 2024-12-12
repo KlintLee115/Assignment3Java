@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 public class Word implements Comparable<Word>, Serializable {
 
+    private static final long serialVersionUID = 5248877746679030444L;
+
     private String word;
     private String filename;
     private ArrayList<Integer> lines;
