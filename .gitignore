@@ -28,3 +28,7 @@ bin/
 ### Mac OS ###
 .DS_Store
 /build/
+javadoc/utilities/package-use.html
+javadoc/utilities/package-tree.html
+javadoc/utilities/package-summary.html
+javadoc/utilities/Iterator.html
