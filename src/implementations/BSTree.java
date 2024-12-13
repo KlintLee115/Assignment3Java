@@ -8,6 +8,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Represents a binary search tree (BST) with operations to manipulate and traverse the tree.
+ * The BST enforces the property that, for any given node, all elements in the left subtree 
+ * are less than the node's element, and all elements in the right subtree are greater.
+ * 
+ * This class implements the BSTreeADT interface.
+ * 
+ * @param <E> The type of elements stored in the tree, which must implement Comparable.
+ */
 public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E>, Serializable {
 
     private BSTreeNode<E> root;
@@ -262,11 +271,10 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E>, Se
     }
 
     /**
- * Calculates the height of the binary search tree from the specified node.
- *
- * @param node the current node in the tree
- * @return the height of the tree rooted at the specified node
- */
+     * Calculates the height of the binary search tree from the specified node.
+     *
+     * @return the height of the tree rooted at the specified node
+     */
     public Iterator<E> inorderIterator() {
         return new InorderIterator(root);
     }

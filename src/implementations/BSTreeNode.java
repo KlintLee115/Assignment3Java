@@ -2,6 +2,12 @@ package implementations;
 
 import java.io.Serializable;
 
+/**
+ * Represents a node within a binary search tree (BST).
+ * Each node stores a data element and references to its left and right child nodes.
+ * 
+ * @param <E> The type of elements stored in the node, which must implement Comparable.
+ */
 public class BSTreeNode<E extends Comparable<? super E>> implements Serializable {
     private E data;
     private BSTreeNode<E> left;

@@ -16,14 +16,29 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import utilities.Iterator;
 
+/**
+ * WordTracker is responsible for processing a text file, tracking word
+ * occurrences, and constructing a binary search tree to manage words and their
+ * metadata. It supports serialization to persist the tree structure and
+ * retrieval upon restart.
+ */
 public class WordTracker implements Serializable {
 
+    // Iterator for in-order traversal
     private static Iterator Iterator;
 
-    private Scanner fileReader;
-    private String filename;
-    private ArrayList<Word> Words;
+    private Scanner fileReader; // Scanner to read input files
+    private String filename;    // Name of the file being processed
+    private ArrayList<Word> Words; // Stores words and their metadata
 
+    /**
+     * Constructor to initialize the WordTracker with a file to read. Attempts
+     * to locate the file in multiple possible paths.
+     *
+     * @param textFile The name of the text file to process
+     * @throws FileNotFoundException If the file cannot be found in the
+     * specified paths
+     */
     public WordTracker(String textFile) throws FileNotFoundException {
         //Getting file path
         Path currentRelativePath = Paths.get("");
@@ -48,7 +63,15 @@ public class WordTracker implements Serializable {
 
     }
 
-    //Function to add to the frequency and lines if they're the same
+    /**
+     * Compares the provided word with existing words in the list. If a match is
+     * found, updates the frequency and line numbers.
+     *
+     * @param currentWord The word to compare
+     * @param lineNumber The line number where the word appears
+     * @param filename The name of the file being processed
+     * @return true if the word exists and is updated, false otherwise
+     */
     public boolean compareWords(String currentWord, int lineNumber, String filename) {
         if (Words == null) {
             return false;
@@ -69,7 +92,13 @@ public class WordTracker implements Serializable {
         return false;
     }
 
-    //Checks if the word already exists before adding
+    /**
+     * Adds a new word to the list if it does not already exist.
+     *
+     * @param word The word to add
+     * @param filename The file name where the word appears
+     * @param lineNumber The line number where the word appears
+     */
     private void addWord(String word, String filename, int lineNumber) {
         boolean wordExists = compareWords(word, lineNumber, filename);
         if (!wordExists) {
@@ -78,7 +107,12 @@ public class WordTracker implements Serializable {
         }
     }
 
-    //Reads file and adds all the words to the arraylist
+    /**
+     * Reads the input file line by line, splits lines into words, and adds them
+     * to the word list.
+     *
+     * @return ArrayList of Word objects containing word metadata
+     */
     public ArrayList<Word> readFile() {
         int lineNumber = 1;
         while (fileReader.hasNextLine()) {
@@ -95,7 +129,16 @@ public class WordTracker implements Serializable {
         return Words;
     }
 
-    //Main
+    /**
+     * Builds the binary search tree with words from the text file. Reads from a
+     * repository if it exists, or starts a new tree otherwise.
+     *
+     * @param tree The BSTree to populate
+     * @param tracker The WordTracker object to read words from
+     * @param option The output format option
+     * @throws IOException If an I/O error occurs
+     * @throws ClassNotFoundException If deserialization fails
+     */
     public static void buildBinarySearchTree(BSTree tree, WordTracker tracker, String option) throws IOException, ClassNotFoundException {
         ArrayList<Word> array = new ArrayList();
         array = tracker.readFile();
@@ -115,6 +158,7 @@ public class WordTracker implements Serializable {
             }
         }
 
+        // Serialize the tree for future use
         FileOutputStream fileOut = new FileOutputStream("repository.ser");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(tree);
@@ -122,10 +166,11 @@ public class WordTracker implements Serializable {
         out.close();
         fileOut.close();
 
+        // Display the tree in the specified format
         System.out.println("---Results---");
         System.out.println("");
         String[] s = option.split("\\W");
-        System.out.println("Writing "+ s[1] +" format");
+        System.out.println("Writing " + s[1] + " format");
 
         tree.inorderIterator();
         Iterator inOrderList = tree.inorderIterator();
@@ -136,7 +181,12 @@ public class WordTracker implements Serializable {
         System.out.println("---Tree Complete---");
     }
 
-
+    /**
+     * Checks if the serialized repository exists.
+     *
+     * @return true if the repository file exists, false otherwise
+     * @throws IOException If an I/O error occurs
+     */
     public static boolean repoExists() throws IOException {
         try {
             FileInputStream fileIn = new FileInputStream("repository.ser");
@@ -149,6 +199,13 @@ public class WordTracker implements Serializable {
         }
     }
 
+    /**
+     * Deserializes the binary search tree from the repository file.
+     *
+     * @return The deserialized BSTree object
+     * @throws IOException If an I/O error occurs
+     * @throws ClassNotFoundException If deserialization fails
+     */
     public static BSTree deserializeTree() throws IOException, ClassNotFoundException {
         BSTree tree = null;
         FileInputStream fileIn = new FileInputStream("repository.ser");
@@ -163,6 +220,14 @@ public class WordTracker implements Serializable {
         return tree;
     }
 
+    /**
+     * Entry point for the WordTracker application. Parses command-line
+     * arguments and initiates processing.
+     *
+     * @param args Command-line arguments
+     * @throws IOException If an I/O error occurs
+     * @throws ClassNotFoundException If deserialization fails
+     */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         // Check if minimum required arguments are provided
         if (args.length < 2) {
@@ -193,7 +258,7 @@ public class WordTracker implements Serializable {
 
         BSTree tree = new BSTree();
         buildBinarySearchTree(tree, tracker, sortOption);
-        
+
     }
 
 }
