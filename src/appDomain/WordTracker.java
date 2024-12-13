@@ -57,8 +57,6 @@ public class WordTracker implements Serializable {
             String newWord = currentWord.toLowerCase();
             String wordInList = word.getWord().toLowerCase();
             int difference = newWord.compareTo(wordInList);
-            //System.out.println("Word in list: " + wordInList);
-            //System.out.println("New Word: " + newWord);
             if (difference == 0) {
                 difference = filename.compareTo(word.getFilename());
                 if (difference == 0) {
@@ -74,7 +72,6 @@ public class WordTracker implements Serializable {
     //Checks if the word already exists before adding
     private void addWord(String word, String filename, int lineNumber) {
         boolean wordExists = compareWords(word, lineNumber, filename);
-        //System.out.println("Word Exists? : " + wordExists);
         if (!wordExists) {
             Word newWord = new Word(word, filename, lineNumber);
             Words.add(newWord);
@@ -90,7 +87,6 @@ public class WordTracker implements Serializable {
 
             for (String word : wordList) {
                 if (word != null) {
-                    //System.out.println("==="+word+"===");
                     addWord(word, filename, lineNumber);
                 }
             }
@@ -114,7 +110,6 @@ public class WordTracker implements Serializable {
             System.out.println("*--Repository Exists--*");
             System.out.println("");
             tree = deserializeTree();
-            //System.out.println("---Root is ---" + tree.getRoot().getElement());
             for (Word word : array) {
                 tree.add(word);
             }
@@ -168,93 +163,6 @@ public class WordTracker implements Serializable {
         return tree;
     }
 
-
-    /*    //A function to test the functionality of the tracker and the serialization
-    public static void listWords(WordTracker tracker, String option) throws FileNotFoundException, IOException, ClassNotFoundException {
-    ArrayList<Word> repoArray = new ArrayList();
-    ArrayList<Word> newArray = new ArrayList();
-    
-    newArray = tracker.readFile();
-    
-    if (repoExists() == true) {
-    repoArray = deserializeWords(repoArray);
-    //System.out.println("-- This deserializaed array has: " + repoArray + " --");
-    
-    //adds new words to the existing list
-    int repoArraySize = repoArray.size();
-    int newArraySize = newArray.size();
-    
-    try {
-    for (int i = 0; i < repoArraySize; i++) {
-    for (int j = 0; j < newArraySize; j++) {
-    Word repoWord = repoArray.get(i);
-    Word newWord = newArray.get(j);
-    
-    //For objects with the same name but different files.
-    int difference = repoWord.compareTo(newWord);
-    if (difference != 0) {
-    
-    //For objects with different names but the same files.
-    difference = repoWord.getFilename().compareTo(newWord.getFilename());
-    if (difference != 0) {
-    repoArray.add(newWord);
-    }
-    }
-    }
-    }
-    } catch (Exception e) {
-    System.out.println("Error: " + e);
-    }
-    } else {
-    for (Word newWord : newArray) {
-    repoArray.add(newWord);
-    //System.out.println(newWord);
-    }
-    }
-    
-    
-    
-    FileOutputStream fileOut = new FileOutputStream("repository.ser");
-    ObjectOutputStream out = new ObjectOutputStream(fileOut);
-    out.writeObject(repoArray);
-    
-    System.out.println("--------Results--------");
-    
-    for (int i = 0; i < repoArray.size(); i++){
-    for (int j = i + 1; j < repoArray.size(); j++){
-    Word a = repoArray.get(i);
-    Word b = repoArray.get(j);
-    int diff = a.compareTo(b);
-    if (diff == 1){
-    Word temp = a;
-    repoArray.set(i, b);
-    repoArray.set(j, temp);
-    
-    }
-    }
-    }
-    
-    for (Word repoWord : repoArray) {
-    System.out.println(repoWord.toString(option));
-    }
-    
-    out.close();
-    fileOut.close();
-    
-    System.out.println("---Listing Complete---");
-    }
-    
-    public static ArrayList<Word> deserializeWords(ArrayList<Word> array) throws IOException, ClassNotFoundException {
-    FileInputStream fileIn = new FileInputStream("repository.ser");
-    ObjectInputStream in = new ObjectInputStream(fileIn);
-    
-    array = (ArrayList<Word>) in.readObject();
-    
-    in.close();
-    fileIn.close();
-    
-    return array;
-    }*/
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         // Check if minimum required arguments are provided
         if (args.length < 2) {
@@ -274,13 +182,11 @@ public class WordTracker implements Serializable {
             System.setOut(fileOut);
         }
 
-        //String outputFile = args[6];
         System.out.println("Filename is: " + fileName);
 
         WordTracker tracker = null;
         try {
             tracker = new WordTracker(fileName);
-            //listWords(tracker, sortOption); // For testing
         } catch (FileNotFoundException e) {
             System.out.println("Error: " + e);
         }
