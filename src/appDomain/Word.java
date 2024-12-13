@@ -40,16 +40,17 @@ public class Word implements Comparable<Word>, Serializable {
         return filename;
     }
 
-    public String toString_pf() {
-        return "===" + word + "=== found in file: " + filename;
-    }
-
-    public String toString_pl() {
-        return "===" + word + "=== found in file: " + filename + " +  on lines: " + lines.toString();
-    }
-    
-    public String toString_po() {
-        return "===" + word + "=== number of entries: " + frequency + " found in file: " + filename + " +  on lines: " + lines.toString();
+    public String toString(String option) {
+        switch (option) {
+            case "-pf":
+                return "Key: ===" + word + "=== found in file: " + filename;
+            case "-pl":
+                return "Key: ===" + word + "=== found in file: " + filename + " +  on lines: " + lines.toString();
+            case "-po":
+                return "Key: ===" + word + "=== number of entries: " + frequency + " found in file: " + filename + " +  on lines: " + lines.toString();
+            default:
+                throw new AssertionError();
+        }
     }
 
     @Override
@@ -59,24 +60,24 @@ public class Word implements Comparable<Word>, Serializable {
 
     @Override
     public int compareTo(Word wordObj) {
-        int difference = this.word.compareTo(wordObj.word);
-        switch (difference) {
-            case 0:
-                difference = this.filename.compareTo(wordObj.filename);
-            switch (difference) {
-                case 0:
-                    return 0;
-                case 1:
-                    return 1;
-                default:
-                    return -1;
+        String a = this.word.toLowerCase();
+        String b = wordObj.word.toLowerCase();
+        int difference = a.compareTo(b);
+        if (difference == 0) {
+            difference = this.filename.compareTo(wordObj.filename);
+            if (difference == 0) {
+                return 0;
+            } else if (difference > 0) {
+                return 1;
+            } else {
+                return -1;
             }
 
-            case 1:
-                return 1;
-            default:
-                return -1; 
+        } else if (difference > 0) {
+            return 1;
+        } else {
+            return -1;
         }
-    }
 
+    }
 }
