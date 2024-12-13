@@ -17,7 +17,7 @@ Usage Instructions
 1. Navigate to the Directory:
 
 	Open a terminal/command prompt.
-	Change to the directory where JavaProject3.jar is located (the dist folder in this case).
+	Change to the directory where JavaProject3.jar is located.
 	
 2. Run the Parser:
 
